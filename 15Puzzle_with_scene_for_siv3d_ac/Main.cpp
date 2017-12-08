@@ -1,14 +1,22 @@
-﻿
-# include <Siv3D.hpp>
+﻿#include <Siv3D.hpp>
+#include "GameSceneManager.h"
+#include "TitleScene.h"
+#include "GameScene.h"
+#include "ResultScene.h"
 
-void Main()
-{
-	const Font font(30);
+void Main() {
+
+	if (!FontManager::Register(L"Roboto-Regular.ttf")) return;
+
+	GameSceneManager manager;
+
+	manager.add<TitleScene>(SceneCode::Title);
+	manager.add<GameScene>(SceneCode::Game);
+	manager.add<ResultScene>(SceneCode::Result);
 
 	while (System::Update())
 	{
-		font(L"ようこそ、Siv3D の世界へ！").draw();
-
-		Circle(Mouse::Pos(), 50).draw({ 255, 0, 0, 127 });
+		ClearPrint();
+		manager.updateAndDraw();
 	}
 }
